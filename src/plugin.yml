@@ -1,12 +1,11 @@
 name: WolfGalaxy
 description: Main plugin of WolfGalaxy sevrer
-version: 0.1a
+version: 0.9a
 main: org.mypixel.wolfgalaxy.Main
 commands:
     chat:
-    plugins:
-        aliases: [pl]
+      description: Allows you to enable / disable chat
     wban:
-    show:
-    hide:
+      description: DO NOT USE
     channel:
+      description: Allows to change chat channels
