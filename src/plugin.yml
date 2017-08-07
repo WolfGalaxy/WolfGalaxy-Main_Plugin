@@ -9,3 +9,5 @@ commands:
       description: DO NOT USE
     channel:
       description: Allows to change chat channels
+    wgbrb:
+      description: Sets your status as "Away from keyboard"

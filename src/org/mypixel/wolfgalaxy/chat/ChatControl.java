@@ -19,9 +19,8 @@ public class ChatControl implements Listener, CommandExecutor {
 
         if (chat == false) {
 
-            if (!event.getPlayer().hasPermission("chat.bypass")) {
+            if (!event.getPlayer().hasPermission("wg.chat.bypass")) {
 
-                event.getPlayer().sendMessage(ChatColor.RED + "Chat is currently disabled!");
                 event.setCancelled(true);
 
             }
@@ -35,7 +34,7 @@ public class ChatControl implements Listener, CommandExecutor {
 
         if (label.equalsIgnoreCase("chat")) {
 
-            if (sender.hasPermission("chat.control")) {
+            if (sender.hasPermission("wg.chat.control")) {
 
                 if (args.length != 1) {
 
@@ -92,7 +91,7 @@ public class ChatControl implements Listener, CommandExecutor {
 
                 }
 
-                if(!sender.hasPermission("chat.control")){
+                if(!sender.hasPermission("wg.chat.control")){
 
                     sender.sendMessage(ChatColor.RED + "You have no permission to control chat!");
 

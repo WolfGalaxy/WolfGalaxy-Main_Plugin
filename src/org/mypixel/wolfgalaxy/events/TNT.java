@@ -18,7 +18,7 @@ public class TNT implements Listener {
 
         Player player = event.getPlayer();
 
-        if(!player.hasPermission("tnt.bypass")){
+        if(!player.hasPermission("wg.tnt.bypass")){
 
             if(block.getType().equals(Material.TNT)){
 
