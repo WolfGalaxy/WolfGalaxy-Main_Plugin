@@ -6,12 +6,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.mypixel.wolfgalaxy.Main;
+import org.mypixel.wolfgalaxy.Sides.SidesMain;
 import org.mypixel.wolfgalaxy.chat.ChatControl;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.util.ArrayList;
 
@@ -27,13 +31,25 @@ public class Channels implements Listener, CommandExecutor {
     public static ArrayList<Player> lowerstaff = new ArrayList<Player>();
 
     @EventHandler
-    public void channels(AsyncPlayerChatEvent e) {
+    public void Channels(AsyncPlayerChatEvent e) {
+
+        ChatColor.translateAlternateColorCodes('&', e.getMessage());
+        String prefix = PermissionsEx.getUser(e.getPlayer()).getOwnPrefix();
+        String suffix = PermissionsEx.getUser(e.getPlayer()).getSuffix();
+
+        if (prefix == null) {
+            prefix = PermissionsEx.getUser(e.getPlayer()).getPrefix();
+        }
+
+        if(suffix == null){
+            suffix = "";
+        }
 
         Player p = e.getPlayer();
         if (siths.contains(p)) {
             if (chat) {
                 for (Player jedi : siths) {
-                    jedi.sendMessage(DARK_RED + " Ⓢ " + p.getDisplayName() + DARK_GRAY + " » " + RED + e.getMessage());
+                    jedi.sendMessage(prefix + DARK_RED + " Ⓢ " + p.getDisplayName() + DARK_GRAY + " » " + RED + e.getMessage());
 
                 }
                 e.setCancelled(true);
@@ -51,7 +67,7 @@ public class Channels implements Listener, CommandExecutor {
         if (jedis.contains(p)) {
             if (chat) {
                 for (Player jedi : jedis) {
-                    jedi.sendMessage(GREEN + " Ⓙ " + p.getDisplayName() + DARK_GRAY + " » " + GREEN + e.getMessage());
+                    jedi.sendMessage(prefix + GREEN + " Ⓙ " + p.getDisplayName() + DARK_GRAY + " » " + GREEN + e.getMessage());
 
                 }
                 e.setCancelled(true);
@@ -69,7 +85,7 @@ public class Channels implements Listener, CommandExecutor {
         if (ls.contains(p)) {
             if (chat) {
                 for (Player leader : ls) {
-                    leader.sendMessage(GREEN + " Ⓛ " + p.getDisplayName() + DARK_GRAY + " » " + DARK_GREEN + e.getMessage());
+                    leader.sendMessage(prefix + GREEN + " Ⓛ " + p.getDisplayName() + DARK_GRAY + " » " + DARK_GREEN + e.getMessage());
 
                 }
                 e.setCancelled(true);
@@ -87,7 +103,7 @@ public class Channels implements Listener, CommandExecutor {
         if (staff.contains(p)) {
             if (chat) {
                 for (Player staff : staff) {
-                    staff.sendMessage(DARK_PURPLE + " Ⓢ " + GRAY + p.getDisplayName() + DARK_GRAY + " » " + DARK_PURPLE + e.getMessage());
+                    staff.sendMessage(prefix + DARK_PURPLE + " Ⓢ " + GRAY + p.getDisplayName() + DARK_GRAY + " » " + DARK_PURPLE + e.getMessage());
 
                 }
                 e.setCancelled(true);
@@ -105,7 +121,7 @@ public class Channels implements Listener, CommandExecutor {
         if (lowerstaff.contains(p)) {
             if (chat) {
                 for (Player staff : lowerstaff) {
-                    staff.sendMessage(DARK_AQUA + " ⓁⓈ " + GRAY + p.getDisplayName() + DARK_GRAY + " » " + AQUA + e.getMessage());
+                    staff.sendMessage(prefix + DARK_AQUA + " ⓁⓈ " + GRAY + p.getDisplayName() + DARK_GRAY + " » " + AQUA + e.getMessage());
 
                 }
                 e.setCancelled(true);
@@ -122,21 +138,20 @@ public class Channels implements Listener, CommandExecutor {
         }
         if (!siths.contains(p) && !jedis.contains(p) && !ls.contains(p) && !staff.contains(p) && !lowerstaff.contains(p)) {
             if (chat) {
+
+                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix) + YELLOW + " Ⓖ " + WHITE + p.getDisplayName() + " " + ChatColor.translateAlternateColorCodes('&', suffix) + DARK_GRAY + " » " + GRAY + e.getMessage());
                 e.setCancelled(true);
 
-                ChatColor.translateAlternateColorCodes('&', e.getMessage());
-
-                Bukkit.broadcastMessage(YELLOW + " Ⓖ " + WHITE + p.getDisplayName() + DARK_GRAY + " » " + GRAY + e.getMessage());
-
-            }
-        } else {
-            if (!p.hasPermission("chat.bypass")) {
-                if (!chat) {
-                    e.setCancelled(true);
-                    p.sendMessage(ChatColor.RED + "Chat is currently disabled!");
+            } else {
+                if (!p.hasPermission("chat.bypass")) {
+                    if (!chat) {
+                        e.setCancelled(true);
+                        p.sendMessage(ChatColor.RED + "Chat is currently disabled!");
+                    }
                 }
             }
         }
+
     }
 
 
@@ -392,152 +407,149 @@ public class Channels implements Listener, CommandExecutor {
                         }
                         if (args[0].equalsIgnoreCase("global")) {
 
-                            if (siths.contains(p) || jedis.contains(p) || ls.contains(p) || staff.contains(p) || lowerstaff.contains(p)) {
+                            if (Channels.siths.contains(p)) {
 
-                                if (Channels.siths.contains(p)) {
+                                Channels.siths.remove(p);
+                                for (Player sith : Channels.siths) {
+                                    sith.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                }
 
-                                    Channels.siths.remove(p);
-                                    for (Player sith : Channels.siths) {
-                                        sith.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                    }
+                            }
+                            if (Channels.jedis.contains(p)) {
+
+                                Channels.jedis.remove(p);
+                                for (Player jedi : Channels.jedis) {
+                                    jedi.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                }
+
+                            }
+                            if (Channels.ls.contains(p)) {
+
+                                Channels.ls.remove(p);
+                                for (Player leadership : Channels.ls) {
+                                    leadership.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                }
+
+                            }
+                            if (Channels.staff.contains(p)) {
+
+                                Channels.staff.remove(p);
+                                for (Player staff : Channels.staff) {
+                                    staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                }
+
+                            }
+                            if (Channels.lowerstaff.contains(p)) {
+
+                                Channels.lowerstaff.remove(p);
+                                for (Player lowerstaff : Channels.lowerstaff) {
+
+                                    lowerstaff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
 
                                 }
-                                if (Channels.jedis.contains(p)) {
 
-                                    Channels.jedis.remove(p);
+                            }
+
+                        }
+
+                    }
+
+                    if (p.hasPermission("wg.chat.moveplayer")) {
+                        if (args[0].equalsIgnoreCase("add") && args[1].equalsIgnoreCase("sith")) {
+
+                            Player toAdd = Bukkit.getPlayer(args[2]);
+
+                            if (!Channels.siths.contains(toAdd)) {
+                                Channels.siths.add(toAdd);
+                                ;
+                                for (Player sith : Channels.siths) {
+                                    sith.sendMessage(GREEN + "Player %player% has joined the channel".replace("%player%", p.getName()));
+                                }
+                                if (Channels.jedis.contains(toAdd)) {
+                                    Channels.jedis.remove(toAdd);
                                     for (Player jedi : Channels.jedis) {
                                         jedi.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
-
                                 }
-                                if (Channels.ls.contains(p)) {
+                                if (Channels.ls.contains(toAdd)) {
 
-                                    Channels.ls.remove(p);
+                                    Channels.ls.remove(toAdd);
                                     for (Player leadership : Channels.ls) {
                                         leadership.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
 
                                 }
-                                if (Channels.staff.contains(p)) {
+                                if (Channels.staff.contains(toAdd)) {
 
-                                    Channels.staff.remove(p);
+                                    Channels.staff.remove(toAdd);
                                     for (Player staff : Channels.staff) {
                                         staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
 
                                 }
-                                if (Channels.lowerstaff.contains(p)) {
+                                if (Channels.lowerstaff.contains(toAdd)) {
 
-                                    Channels.lowerstaff.remove(p);
-                                    for (Player lowerstaff : Channels.lowerstaff) {
-
-                                        lowerstaff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-
+                                    Channels.lowerstaff.remove(toAdd);
+                                    for (Player staff : Channels.lowerstaff) {
+                                        staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
 
                                 }
-
                             }
 
+
+                            return true;
                         }
 
-                        if (p.hasPermission("wg.chat.moveplayer")) {
-                            if (args[0].equalsIgnoreCase("add") && args[1].equalsIgnoreCase("sith")) {
+                    }
 
-                                Player toAdd = Bukkit.getPlayer(args[2]);
+                    if (p.hasPermission("wg.chat.moveplayer")) {
+                        if (args[0].equalsIgnoreCase("add") && args[1].equalsIgnoreCase("jedi")) {
 
-                                if (!Channels.siths.contains(toAdd)) {
-                                    Channels.siths.add(toAdd);
-                                    ;
-                                    for (Player sith : Channels.siths) {
-                                        sith.sendMessage(GREEN + "Player %player% has joined the channel".replace("%player%", p.getName()));
-                                    }
-                                    if (Channels.jedis.contains(toAdd)) {
-                                        Channels.jedis.remove(toAdd);
-                                        for (Player jedi : Channels.jedis) {
-                                            jedi.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-                                    }
-                                    if (Channels.ls.contains(toAdd)) {
+                            Player toAdd = Bukkit.getPlayer(args[2]);
 
-                                        Channels.ls.remove(toAdd);
-                                        for (Player leadership : Channels.ls) {
-                                            leadership.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
-                                    }
-                                    if (Channels.staff.contains(toAdd)) {
-
-                                        Channels.staff.remove(toAdd);
-                                        for (Player staff : Channels.staff) {
-                                            staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
-                                    }
-                                    if (Channels.lowerstaff.contains(toAdd)) {
-
-                                        Channels.lowerstaff.remove(toAdd);
-                                        for (Player staff : Channels.lowerstaff) {
-                                            staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
+                            if (!Channels.jedis.contains(toAdd)) {
+                                Channels.jedis.add(toAdd);
+                                ;
+                                for (Player sith : Channels.jedis) {
+                                    sith.sendMessage(GREEN + "Player %player% has joined the channel".replace("%player%", p.getName()));
+                                }
+                                if (Channels.siths.contains(toAdd)) {
+                                    Channels.siths.remove(toAdd);
+                                    for (Player jedi : Channels.siths) {
+                                        jedi.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
                                 }
+                                if (Channels.ls.contains(toAdd)) {
 
-
-                                return true;
-                            }
-
-                        }
-
-                        if (p.hasPermission("wg.chat.moveplayer")) {
-                            if (args[0].equalsIgnoreCase("add") && args[1].equalsIgnoreCase("jedi")) {
-
-                                Player toAdd = Bukkit.getPlayer(args[2]);
-
-                                if (!Channels.jedis.contains(toAdd)) {
-                                    Channels.jedis.add(toAdd);
-                                    ;
-                                    for (Player sith : Channels.jedis) {
-                                        sith.sendMessage(GREEN + "Player %player% has joined the channel".replace("%player%", p.getName()));
+                                    Channels.ls.remove(toAdd);
+                                    for (Player leadership : Channels.ls) {
+                                        leadership.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
                                     }
-                                    if (Channels.siths.contains(toAdd)) {
-                                        Channels.siths.remove(toAdd);
-                                        for (Player jedi : Channels.siths) {
-                                            jedi.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-                                    }
-                                    if (Channels.ls.contains(toAdd)) {
 
-                                        Channels.ls.remove(toAdd);
-                                        for (Player leadership : Channels.ls) {
-                                            leadership.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
-                                    }
-                                    if (Channels.staff.contains(toAdd)) {
-
-                                        Channels.staff.remove(toAdd);
-                                        for (Player staff : Channels.staff) {
-                                            staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
-                                    }
-                                    if (Channels.lowerstaff.contains(toAdd)) {
-
-                                        Channels.lowerstaff.remove(toAdd);
-                                        for (Player staff : Channels.lowerstaff) {
-                                            staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
-                                        }
-
-                                    }
                                 }
+                                if (Channels.staff.contains(toAdd)) {
 
+                                    Channels.staff.remove(toAdd);
+                                    for (Player staff : Channels.staff) {
+                                        staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                    }
 
-                                return true;
+                                }
+                                if (Channels.lowerstaff.contains(toAdd)) {
+
+                                    Channels.lowerstaff.remove(toAdd);
+                                    for (Player staff : Channels.lowerstaff) {
+                                        staff.sendMessage(RED + "Player %player% has left the channel".replace("%player%", p.getName()));
+                                    }
+
+                                }
                             }
 
+
+                            return true;
                         }
+
                     }
                 }
             }

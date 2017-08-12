@@ -97,6 +97,17 @@ public class ChatControl implements Listener, CommandExecutor {
 
                 }
 
+                if(args[0].equalsIgnoreCase("help")){
+
+                    sender.sendMessage(ChatColor.DARK_GRAY + "-----< " + ChatColor.RED + "WolfGalaxy Chat - Help" + ChatColor.DARK_GRAY + " >-----");
+                    sender.sendMessage(ChatColor.YELLOW + "/chat toggle - Toggles chat (on/off)");
+                    sender.sendMessage(ChatColor.YELLOW + "/chat on - Turns chat on");
+                    sender.sendMessage(ChatColor.YELLOW + "/chat off - Turns chat off");
+                    sender.sendMessage(ChatColor.YELLOW + "/chat clear - Clears chat");
+                    sender.sendMessage(ChatColor.DARK_GRAY + "-----< " + ChatColor.RED + "WolfGalaxy Chat - Help" + ChatColor.DARK_GRAY + " >-----");
+
+                }
+
             }
 
         }
