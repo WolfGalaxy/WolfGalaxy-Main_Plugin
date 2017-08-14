@@ -2,11 +2,15 @@
 
         import org.bukkit.Bukkit;
         import org.bukkit.ChatColor;
+        import org.bukkit.Material;
         import org.bukkit.configuration.file.FileConfiguration;
         import org.bukkit.entity.Player;
         import org.bukkit.event.EventHandler;
         import org.bukkit.event.Listener;
         import org.bukkit.event.player.PlayerJoinEvent;
+        import org.bukkit.inventory.Inventory;
+        import org.bukkit.inventory.ItemStack;
+        import org.bukkit.inventory.meta.ItemMeta;
         import org.bukkit.permissions.PermissionAttachment;
         import org.bukkit.plugin.java.JavaPlugin;
         import org.mypixel.wolfgalaxy.Achievements.FirstJoin;
@@ -18,6 +22,7 @@
         import org.mypixel.wolfgalaxy.chat.channels.Channels;
         import org.mypixel.wolfgalaxy.commands.AFK;
         import org.mypixel.wolfgalaxy.events.TNT;
+        import org.mypixel.wolfgalaxy.items.CustomItemsCommands;
 
         import java.io.File;
         import java.io.IOException;
@@ -34,6 +39,8 @@ public class Main extends JavaPlugin implements Listener{
     public HashMap<UUID, PermissionAttachment> playerPermissions = new HashMap<>();
     private YamlShit yaml;
     public FileConfiguration sides;
+    public FileConfiguration config;
+    public Inventory inv;
     File sideSave = new File(getDataFolder(), "playerSides.yml");
 
     @Override
@@ -45,6 +52,7 @@ public class Main extends JavaPlugin implements Listener{
         boolean sidesIsCreated = sideSave.exists();
 
         chat = true;
+        createInv(config.getInt("Slots"), ChatColor.AQUA + "Custom Armour");
 
         System.out.println(ChatColor.YELLOW + "[-------------------------]");
         System.out.println(ChatColor.YELLOW + "[  WolfGalaxy Main Plugin ]");
@@ -52,7 +60,7 @@ public class Main extends JavaPlugin implements Listener{
         System.out.println(ChatColor.YELLOW + "[-------------------------]");
 
         registerCommands();
-
+        config = getConfig();
         registerEvents();
     }
 
@@ -62,7 +70,7 @@ public class Main extends JavaPlugin implements Listener{
 
         System.out.println(ChatColor.YELLOW + "[-------------------------]");
         System.out.println(ChatColor.YELLOW + "[  WolfGalaxy Main Plugin ]");
-        System.out.println(ChatColor.YELLOW + "[       Disabled          ]");  //Do you see this? <---
+        System.out.println(ChatColor.YELLOW + "[       Disabled          ]");
         System.out.println(ChatColor.YELLOW + "[-------------------------]");
 
     }
@@ -73,6 +81,7 @@ public class Main extends JavaPlugin implements Listener{
         getCommand("channel").setExecutor(new Channels());
         getCommand("wgbrb").setExecutor(new AFK());
         getCommand("side").setExecutor(new SidesMain(this));
+        getCommand("wearArmour").setExecutor(new CustomItemsCommands(this));
     }
 
     public void registerEvents(){
@@ -86,6 +95,7 @@ public class Main extends JavaPlugin implements Listener{
         getServer().getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new AFK(), this);
         Bukkit.getPluginManager().registerEvents(new SidesMain(this), this);
+        Bukkit.getPluginManager().registerEvents(new CustomItemsCommands(this), this);
 
     }
 
@@ -118,5 +128,23 @@ public class Main extends JavaPlugin implements Listener{
 
     public YamlShit getYamlShit() {
         return yaml;
+    }
+
+    public void createInv(int slot, String name) {
+        inv = Bukkit.createInventory(null, slot, name);
+        for (String string : config.getConfigurationSection("Items").getKeys(false)) {
+
+            short durability = (short) config.getInt("Items." + string + ".Durability");
+            String ItemName = config.getString("Items." + string + ".ItemName");
+            ItemStack is = new ItemStack(Material.getMaterial(ItemName), 1);
+            ItemMeta m = is.getItemMeta();
+            m.setDisplayName(ChatColor.translateAlternateColorCodes('&',config.getString("Items." + string + ".Name")));
+            is.setItemMeta(m);
+            if (!(ItemName.startsWith("WOODEN_") || ItemName.startsWith("DIAMOND_") || ItemName.startsWith("GOLDEN_") || ItemName.startsWith("STONE_"))) {
+                is.setDurability(durability);
+            }
+            inv.setItem(config.getInt("Items." + string + ".Slot"), is);
+
+        }
     }
 }
