@@ -5,6 +5,8 @@ main: org.mypixel.wolfgalaxy.Main
 commands:
     chat:
       description: Allows you to enable / disable chat
+    wearArmour:
+      description: Allows you to open the custom items inv
     wban:
       description: DO NOT USE
     channel:
