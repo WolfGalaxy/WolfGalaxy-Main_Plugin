@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<s:project xmlns:s="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <s:modelVersion>4.0.0</s:modelVersion>
+
+    <s:groupId>WG</s:groupId>
+    <s:artifactId>WolfGalaxy-MainPlugin</s:artifactId>
+    <s:version>1.0-SNAPSHOT</s:version>
+    <s:build>
+        <s:plugins>
+            <s:plugin>
+                <s:groupId>org.apache.maven.plugins</s:groupId>
+                <s:artifactId>maven-compiler-plugin</s:artifactId>
+                <s:configuration>
+                    <s:source>1.7</s:source>
+                    <s:target>1.7</s:target>
+                </s:configuration>
+            </s:plugin>
+        </s:plugins>
+    </s:build>
+
+    <s:dependencies>
+        <s:dependency>
+            <s:groupId>org.bukkit</s:groupId>
+            <s:artifactId>bukkit</s:artifactId>
+            <s:version>1.12-R0.1-SNAPSHOT</s:version>
+            <s:scope>provided</s:scope>
+        </s:dependency>
+        <s:dependency>
+            <s:groupId>org.bukkit</s:groupId>
+            <s:artifactId>craftbukkit</s:artifactId>
+            <s:version>1.12-R0.1-SNAPSHOT</s:version>
+            <s:scope>provided</s:scope>
+        </s:dependency>
+        <s:dependency>
+            <s:groupId>mkremins</s:groupId>
+            <s:artifactId>fanciful</s:artifactId>
+            <s:version>0.4.0-SNAPSHOT</s:version>
+        </s:dependency>
+        <s:dependency>
+            <s:groupId>net.dv8tion</s:groupId>
+            <s:artifactId>JDA</s:artifactId>
+            <s:version>LATEST</s:version>
+        </s:dependency>
+        <s:dependency>
+            <s:groupId>ru.tehkode</s:groupId>
+            <s:artifactId>PermissionsEx</s:artifactId>
+            <s:version>LATEST</s:version>
+            <s:scope>provided</s:scope>
+        </s:dependency>
+    </s:dependencies>
+    <s:repositories>
+        <s:repository>
+            <s:id>spigotmc-repo</s:id>
+            <s:url>https://hub.spigotmc.org/nexus/content/groups/public/</s:url>
+        </s:repository>
+        <s:repository>
+            <s:id>stealthyone-repo</s:id>
+            <s:url>http://repo.stealthyone.com/content/groups/public</s:url>
+        </s:repository>
+        <s:repository>
+            <s:id>jcenter</s:id>
+            <s:name>jcenter-bintray</s:name>
+            <s:url>http://jcenter.bintray.com</s:url>
+        </s:repository>
+        <s:repository>
+            <s:id>pex-repo</s:id>
+            <s:url>http://pex-repo.aoeu.xyz</s:url>
+        </s:repository>
+    </s:repositories>
+
+
+</s:project>
