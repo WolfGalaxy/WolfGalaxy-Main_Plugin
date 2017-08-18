@@ -1,0 +1,15 @@
+
+#Number of slots in the gui item
+Slots: 9
+
+#Please that the slot number starts with 0 and ends with less than one by what you put in slot number
+#For ItemName please make it all Capitalized as seen in the example below
+#And for the name it accepts color codes and spaces
+#For the type there are 4 types, 1.Helmet 2.Chestplate 3.Leggings 4.Boots
+Items:
+  Helmet1:
+    Name: '&7Fab Hat'
+    Type: 'Helmet'
+    Durability: 10
+    ItemName: 'DIAMOND_HOE'
+    Slot: 1

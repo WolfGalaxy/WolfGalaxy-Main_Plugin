@@ -1,0 +1,17 @@
+name: WolfGalaxy
+description: Main plugin of WolfGalaxy sevrer
+version: 0.9a
+main: org.mypixel.wolfgalaxy.Main
+commands:
+    chat:
+      description: Allows you to enable / disable chat
+    wearArmour:
+      description: Allows you to open the custom items inv
+    wban:
+      description: DO NOT USE
+    channel:
+      description: Allows to change chat channels
+    wgbrb:
+      description: Sets your status as "Away from keyboard"
+    side:
+      description: Tests
