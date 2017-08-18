@@ -25,12 +25,12 @@ if(!e.getAuthor().getId().equals(e.getJDA().getSelfUser().getId()) && e.getChann
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
-        Main.getInstance().bot.getTextChannelById(Long.valueOf("347531538684182528")).sendMessage(e.getPlayer() + "has joined the server.").queue();
+        Main.getInstance().bot.getTextChannelById(Long.valueOf("347531538684182528")).sendMessage(e.getPlayer().getName() + "has joined the server.").queue();
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
-        Main.getInstance().bot.getTextChannelById(Long.valueOf("347531538684182528")).sendMessage(e.getPlayer() + "has left the server.").queue();
+        Main.getInstance().bot.getTextChannelById(Long.valueOf("347531538684182528")).sendMessage(e.getPlayer().getName() + "has left the server.").queue();
     }
 
 }
