@@ -35,12 +35,23 @@ public class Channels implements Listener, CommandExecutor {
     @EventHandler
     public void Channels(AsyncPlayerChatEvent e) {
 
-        ChatColor.translateAlternateColorCodes('&', e.getMessage());
-        String prefix = PermissionsEx.getUser(e.getPlayer()).getOwnPrefix();
-        String suffix = PermissionsEx.getUser(e.getPlayer()).getSuffix();
+        String pexPrefix = PermissionsEx.getUser(e.getPlayer()).getOwnPrefix();
+
+        String pexSuffix = PermissionsEx.getUser(e.getPlayer()).getSuffix();
+
+        Bukkit.broadcastMessage("[DEBUG] >> " + pexPrefix + " PEXPrefix");
+        Bukkit.broadcastMessage("[DEBUG] >> " + pexSuffix + " PEXSuffix");
+
+        String prefix = translateAlternateColorCodes('&', pexPrefix);
+
+        Bukkit.broadcastMessage("[DEBUG] >> " + prefix + " Prefix");
+
+        String suffix = translateAlternateColorCodes('&', pexSuffix);
+
+        Bukkit.broadcastMessage("[DEBUG] >> " + suffix + " Prefix");
 
         if (prefix == null) {
-            prefix = PermissionsEx.getUser(e.getPlayer()).getPrefix();
+            prefix = translateAlternateColorCodes('&', PermissionsEx.getUser(e.getPlayer()).getPrefix());
         }
 
         if(suffix == null){
